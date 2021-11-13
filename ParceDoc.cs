@@ -84,6 +84,7 @@ namespace TestTaskTrainee
 
         private void ParceHtml(string DownloadHtml, string url)
         {
+            string temprary;
             Console.WriteLine("Parcing Html:");
             var links = Regex.Matches(DownloadHtml, "<a(.*?) href=\"(.*?)\"").Cast<Match>().Select(x => x.Groups[2].Value);
             //string link;
@@ -94,19 +95,57 @@ namespace TestTaskTrainee
             Console.WriteLine("Html:");
             foreach (var item in links)
             {
-                if (item[0] == '/' || item.Contains(url))
+                try
                 {
-                    if (item.Contains(url) || item.Contains(uriI.Host))
+                    if (item.Contains("https") || item.Contains("http") || item.Contains("www"))
                     {
-                        html_hash.Add(item);
-                        Console.WriteLine($"link = {item}");
+                        if(item[0] =='/' && item[1] == '/')
+                        {
+                            temprary = "https:" + item;
+                            var temp_uriI = new Uri(temprary);
+
+                            if (uriI.Host == temp_uriI.Host)
+                            {
+                                html_hash.Add(temprary);
+                                Console.WriteLine($"link = {temprary}");
+                            }
+                        }
+                        else
+                        {
+                            var temp_uriI = new Uri(item);
+                            if (uriI.Host == temp_uriI.Host)
+                            {
+                                html_hash.Add(item);
+                                Console.WriteLine($"link = {item}");
+                            }
+                            
+                        }
+                        
                     }
-                    else
+                    else if (item[0] == '/' || item.Contains(url))
                     {
-                        html_hash.Add(url + item);
-                        Console.WriteLine($"link = {url + item}");
+                        // || item[0] == '#'
+                        if (item.Contains(url) || item.Contains(uriI.Host))
+                        {
+                            html_hash.Add(item);
+                            Console.WriteLine($"link = {item}");
+                        }
+                        
+                        
+                        else
+                        {
+                            html_hash.Add(url + item);
+                            Console.WriteLine($"link = {url + item}");
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    
+                }
+               // var temp_uri = new Uri(item);
+                
 
                 
 

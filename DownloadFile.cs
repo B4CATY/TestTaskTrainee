@@ -30,7 +30,7 @@ namespace TestTaskTrainee
         }
         
 
-        public void DownloadXmlDoc()
+        public async Task DownloadXmlDoc()
         {
             Console.WriteLine("Download Xml Doc");
             if (link_ == null || link_ == "") link_ = "https://www.ukad-group.com";
@@ -44,7 +44,7 @@ namespace TestTaskTrainee
 
                 wc.Encoding = System.Text.Encoding.UTF8;
 
-                DownloadXml = wc.DownloadString(link_);
+                DownloadXml = await wc.DownloadStringTaskAsync(link_);
             }
             catch (ArgumentNullException ex)
             {
@@ -58,17 +58,17 @@ namespace TestTaskTrainee
             
 
         }
-        public void DownloadHtmlDoc()
+        public async Task DownloadHtmlDoc()
         {
             Console.WriteLine("Download Html Doc");
             if (link_ == null || link_ == "") link_ = "https://www.ukad-group.com";
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = client.GetAsync(link_).Result;
+            HttpResponseMessage response = await client.GetAsync(link_);
 
             HttpContent content = response.Content;
 
-            DownloadHtml = content.ReadAsStringAsync().Result;
+            DownloadHtml = await content.ReadAsStringAsync();
             
         } 
     }

@@ -29,7 +29,9 @@ namespace TestTaskTrainee
         {
             HtmlCount = main_Html.Count;
             XmlCount = main_Xml.Count;
-            HashSet<string> temp = main_Xml;
+
+            HashSet<string> temp = new HashSet<string>(main_Xml);
+
             main_Xml.ExceptWith(main_Html);
             main_Html.ExceptWith(temp);
         }
@@ -54,22 +56,26 @@ namespace TestTaskTrainee
 
         private void CteateListOfLinks()
         {
+            Console.WriteLine("Time Xml");
             foreach (var item in main_Xml)
             {
                 list_xml.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
             }
             SortingAtTimes(ref list_xml);
+            Console.WriteLine("Time Html");
             foreach (var item in main_Html)
             {
                 list_html.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
             }
-            SortingAtTimes(ref list_html);
+            SortingAtTimes(ref list_html); //sort at times
         }
 
         public void ShowParce()
         {
-            ToGetDifferentReferencesOnly();
-            CteateListOfLinks();
+            ToGetDifferentReferencesOnly();// takes away identical elements in a list
+
+            CteateListOfLinks();//carries from hash in list and also knows time of response
+
             Console.WriteLine("If time = -1, site cant be opened");
             Console.WriteLine("\n\n\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site\n\n");
             foreach (var item in list_xml)
@@ -84,6 +90,10 @@ namespace TestTaskTrainee
 
             Console.WriteLine($"\n\nUrls(html documents) found after crawling a website: {HtmlCount}");
             Console.WriteLine($"\n\nUrlsUrls found in sitemap: {XmlCount}");
+
+            Console.WriteLine($"\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml: {list_html.Count}\n\n");
+            Console.WriteLine($"\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site: {list_xml.Count}\n\n");
+            
         }
     }
 }

@@ -18,6 +18,7 @@ namespace TestTaskTrainee
     {
         public static double TimeofResponse(string link)
         {
+            
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(link);
             System.Diagnostics.Stopwatch timer = new Stopwatch();
 
@@ -38,6 +39,14 @@ namespace TestTaskTrainee
                 timer.Stop();
                 return -1;
             }
+           
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                timer.Stop();
+                return -1;
+            }
+            
             //Console.WriteLine(timer.Elapsed.TotalMilliseconds);
         }
     }
