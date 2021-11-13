@@ -19,25 +19,25 @@ namespace TestTaskTrainee
         {
             try
             {
-                string url = "https://basicweb.ru";
-                CorrectUri(url);
-                Parcer parcer = new Parcer(url);
-                parcer.Start();
-                parcer.ShowInfo();
+                //string url = Console.ReadLine();
+                string url = "https://translate.meta.ua";
+                if (Timer.TimeofResponse(url) == -1) throw new Exception();
+                DownloadFile downloadFile = new DownloadFile(url);
+                downloadFile.DownloadHtmlDoc();
+                downloadFile.DownloadXmlDoc();
+                ParceDoc parceDoc = new ParceDoc();
+                parceDoc.StartParceDocs(downloadFile.XmlDoc, downloadFile.HtmlDoc, url);
+                MethodsForReferences methods = new MethodsForReferences(parceDoc.XmlLinks, parceDoc.HtmlLinks);
+                methods.ShowParce();
             }
             catch (Exception)
             {
 
-                Console.WriteLine("erorr link, restart pls");
+                Console.WriteLine("erorr link or a web-site a block stands from parcing, restart pls");
             }
-            Console.WriteLine("End work");
+            Console.WriteLine("\n\nEnd work");
         }
-        private static void CorrectUri(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            System.Diagnostics.Stopwatch timer = new Stopwatch();
-            HttpWebResponse response1 = (HttpWebResponse)request.GetResponse();
-        }
+       
     }
 }
 #region 12

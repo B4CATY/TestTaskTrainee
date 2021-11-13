@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -12,17 +12,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections;
 
+
+
 namespace TestTaskTrainee
 {
-    struct LinkTime
-    {
-        public string link;
-        public double time;
-    }
+    
+    
+   
     public class Parcer
     {
         private List<LinkTime> links_html;
         private List<LinkTime> links_xml;
+
         private LinkTime[] array_links_html;
         private LinkTime[] array_links_xml;
 
@@ -108,7 +109,7 @@ namespace TestTaskTrainee
             }
             xml_count = links_xml.Count;
             if (xml_count == 0) throw new Exception("There is not a xml document on this web-site, or a web-site forbade access to him.");
-            /*Console.WriteLine(xml_count);*/
+            *//*Console.WriteLine(xml_count);*//*
 
 
         }
@@ -146,6 +147,7 @@ namespace TestTaskTrainee
                 
                 //Console.WriteLine($"link = {temp.link}, time = {temp.time}");
             }
+            links_html = links_html.Distinct().ToList();
             html_count = links_html.Count;
             if (html_count == 0) throw new Exception("Ban html document");
             //Console.WriteLine(html_count);
@@ -280,3 +282,4 @@ namespace TestTaskTrainee
     }
 
 }
+*/
