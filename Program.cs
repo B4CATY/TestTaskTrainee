@@ -19,8 +19,9 @@ namespace TestTaskTrainee
         {
             try
             {
-                //string url = Console.ReadLine();
-                string url = "https://www.ukad-group.com";
+                Console.WriteLine("Enter your link: ");
+                string url = Console.ReadLine();
+                //string url = "https://www.ukad-group.com";
 
                 if (Timer.TimeofResponse(url) == -1) throw new Exception();
 
@@ -32,7 +33,7 @@ namespace TestTaskTrainee
                 MethodsForReferences methods = new MethodsForReferences(parceDoc.XmlLinks, parceDoc.HtmlLinks);
                 methods.ShowParce();
             }
-            catch (WebException)
+            catch (Exception)
             {
 
                 Console.WriteLine("erorr link or a web-site a block stands from parcing, restart pls");

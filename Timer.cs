@@ -35,7 +35,7 @@ namespace TestTaskTrainee
             {
               
                 Console.WriteLine($"Site: {link},  {ex.Message}");
-                //Console.WriteLine("Site cant be opened");
+                
                 timer.Stop();
                 return -1;
             }
@@ -47,7 +47,7 @@ namespace TestTaskTrainee
                 return -1;
             }
             
-            //Console.WriteLine(timer.Elapsed.TotalMilliseconds);
+            
         }
     }
 }

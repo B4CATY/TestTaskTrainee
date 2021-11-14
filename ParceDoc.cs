@@ -87,7 +87,7 @@ namespace TestTaskTrainee
             string temprary;
             Console.WriteLine("Parcing Html:");
             var links = Regex.Matches(DownloadHtml, "<a(.*?) href=\"(.*?)\"").Cast<Match>().Select(x => x.Groups[2].Value);
-            //string link;
+           
 
             var uriI = new Uri(url);
             url = Uri.UriSchemeHttps + "://" + uriI.Host;
@@ -107,7 +107,7 @@ namespace TestTaskTrainee
                             if (uriI.Host == temp_uriI.Host)
                             {
                                 html_hash.Add(temprary);
-                                Console.WriteLine($"link = {temprary}");
+                                
                             }
                         }
                         else
@@ -116,26 +116,31 @@ namespace TestTaskTrainee
                             if (uriI.Host == temp_uriI.Host)
                             {
                                 html_hash.Add(item);
-                                Console.WriteLine($"link = {item}");
+                                
                             }
                             
                         }
                         
                     }
-                    else if (item[0] == '/' || item.Contains(url))
+                    else if (item[0] == '/' || item.Contains(url) || item[0] == '#')
                     {
-                        // || item[0] == '#'
+                        
                         if (item.Contains(url) || item.Contains(uriI.Host))
                         {
                             html_hash.Add(item);
-                            Console.WriteLine($"link = {item}");
+                            
                         }
-                        
-                        
+                        else if (item[0] == '#')
+                        {
+                            html_hash.Add(url +"/" + item);
+                            
+                        }
+
+
                         else
                         {
                             html_hash.Add(url + item);
-                            Console.WriteLine($"link = {url + item}");
+                            
                         }
                     }
                 }
@@ -144,7 +149,7 @@ namespace TestTaskTrainee
                     Console.WriteLine(ex.Message);
                     
                 }
-               // var temp_uri = new Uri(item);
+               
                 
 
                 
