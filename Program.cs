@@ -19,6 +19,8 @@ namespace TestTaskTrainee
         {
             try
             {
+
+                Console.WriteLine("Do a cantilever on all screen!");
                 Console.WriteLine("Enter your link: ");
                 string url = Console.ReadLine();
                 

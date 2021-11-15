@@ -8,8 +8,10 @@ namespace TestTaskTrainee
 {
     public class MethodsForReferences
     {
+
         List<LinkTime> list_xml;
         List<LinkTime> list_html;
+        List<LinkTime> list_all;
 
         HashSet<string> main_Xml;
         HashSet<string> main_Html;
@@ -60,14 +62,17 @@ namespace TestTaskTrainee
             foreach (var item in main_Xml)
             {
                 list_xml.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
+                
             }
-            SortingAtTimes(ref list_xml);
+            
             Console.WriteLine("Time Html");
             foreach (var item in main_Html)
             {
                 list_html.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
+               
             }
-            SortingAtTimes(ref list_html); //sort at times
+            list_all = list_html.Concat(list_xml).ToList();
+            SortingAtTimes(ref list_all);
         }
 
         public void ShowParce()
@@ -84,7 +89,7 @@ namespace TestTaskTrainee
                 Console.WriteLine("in sitemap 0 links or sitemap cant be opened");
             else
             {
-                Console.WriteLine("\n\n\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site\n\n");
+                Console.WriteLine($"\n\n\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site \n\n");
                 
                 foreach (var item in list_xml)
                 {
@@ -105,20 +110,15 @@ namespace TestTaskTrainee
                 }
             }
             i = 1;
-            Console.WriteLine("Press any key");
-            Console.ReadKey();
-            Console.Clear();
-            Console.WriteLine("\n\n\nTiming\nUrl\t\t\t\t\tTiming(ms)");
-            foreach (var item in list_html)
+            
+            
+            Console.WriteLine("\n\n\n\n\nTiming\nUrl\t\t\t\t\t\t\t\tt\t\t\t\t\t\t\t\t\tTiming(ms)");
+            foreach (var item in list_all)
             {
                 Console.WriteLine($"{i}){item.link, -135}{item.time, 13}");
                 i++;
             }
-            foreach (var item in list_xml)
-            {
-                Console.WriteLine($"{i}){item.link,-135}{item.time, 13}");
-                i++;
-            }
+            
 
             Console.WriteLine($"\n\nUrls(html documents) found after crawling a website: {HtmlCount}");
             Console.WriteLine($"\n\nUrls found in sitemap: {XmlCount}");
