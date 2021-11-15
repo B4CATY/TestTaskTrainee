@@ -20,8 +20,8 @@ namespace TestTaskTrainee
             try
             {
                 Console.WriteLine("Enter your link: ");
-                string url = Console.ReadLine();
-                //string url = "https://www.ukad-group.com";
+                //string url = Console.ReadLine();
+                string url = "https://www.ukad-group.com";
 
                 if (Timer.TimeofResponse(url) == -1) throw new Exception();
 

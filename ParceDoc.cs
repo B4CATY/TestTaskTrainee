@@ -76,7 +76,7 @@ namespace TestTaskTrainee
             {
                 xml_hash.Add(node.InnerText);
 
-                Console.WriteLine($"link = {node.InnerText}");
+                //Console.WriteLine($"link = {node.InnerText}");
             }
             xml_count = xml_hash.Count;
             if (xml_count == 0) throw new Exception("There is not a xml document on this web-site, or a web-site forbade access to him.");
@@ -122,7 +122,7 @@ namespace TestTaskTrainee
                         }
                         
                     }
-                    else if (item[0] == '/' || item.Contains(url) || item[0] == '#')
+                    else if (item[0] == '/' || item.Contains(url))
                     {
                         
                         if (item.Contains(url) || item.Contains(uriI.Host))
@@ -130,13 +130,6 @@ namespace TestTaskTrainee
                             html_hash.Add(item);
                             
                         }
-                        else if (item[0] == '#')
-                        {
-                            html_hash.Add(url +"/" + item);
-                            
-                        }
-
-
                         else
                         {
                             html_hash.Add(url + item);

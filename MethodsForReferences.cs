@@ -75,24 +75,55 @@ namespace TestTaskTrainee
             ToGetDifferentReferencesOnly();// takes away identical elements in a list
 
             CteateListOfLinks();//carries from hash in list and also knows time of response
-
+            Console.WriteLine("Press any key");
+            Console.ReadKey();
+            Console.Clear();
+            int i = 1;
             Console.WriteLine("If time = -1, site cant be opened");
-            Console.WriteLine("\n\n\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site\n\n");
-            foreach (var item in list_xml)
+            if (list_xml.Count == 0)
+                Console.WriteLine("in sitemap 0 links or sitemap cant be opened");
+            else
             {
-                Console.WriteLine($"Links: {item.link},\tTime ms: {item.time}");
+                Console.WriteLine("\n\n\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site\n\n");
+                
+                foreach (var item in list_xml)
+                {
+                    Console.WriteLine($"{i}){item.link}");
+                    i++;
+                }
             }
             Console.WriteLine("\n\n\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml\n\n");
+            if (list_html.Count == 0)
+                Console.WriteLine("in html 0 links or html cant be opened");
+            else
+            {
+                i = 1;
+                foreach (var item in list_html)
+                {
+                    Console.WriteLine($"{i}){item.link}");
+                    i++;
+                }
+            }
+            i = 1;
+            Console.WriteLine("Press any key");
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("\n\n\nTiming\nUrl\t\t\t\t\tTiming(ms)");
             foreach (var item in list_html)
             {
-                Console.WriteLine($"Links: {item.link},\tTime ms: {item.time}");
+                Console.WriteLine($"{i}){item.link, -135}{item.time, 13}");
+                i++;
+            }
+            foreach (var item in list_xml)
+            {
+                Console.WriteLine($"{i}){item.link,-135}{item.time, 13}");
+                i++;
             }
 
             Console.WriteLine($"\n\nUrls(html documents) found after crawling a website: {HtmlCount}");
-            Console.WriteLine($"\n\nUrlsUrls found in sitemap: {XmlCount}");
+            Console.WriteLine($"\n\nUrls found in sitemap: {XmlCount}");
 
-            Console.WriteLine($"\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml: {list_html.Count}\n\n");
-            Console.WriteLine($"\nUrls FOUNDED IN SITEMAP.XML but not founded after crawling a web site: {list_xml.Count}\n\n");
+           
             
         }
     }
