@@ -22,8 +22,8 @@ namespace TestTaskTrainee
 
                 Console.WriteLine("Do a cantilever on all screen!");
                 Console.WriteLine("Enter your link: ");
-                //string url = Console.ReadLine();
-                string url = "https://www.ukad-group.com";
+                string url = Console.ReadLine();
+                
 
                 if (Timer.TimeofResponse(url) == -1) throw new Exception();
 
