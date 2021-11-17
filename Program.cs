@@ -22,8 +22,8 @@ namespace TestTaskTrainee
 
                 Console.WriteLine("Do a cantilever on all screen!");
                 Console.WriteLine("Enter your link: ");
-                string url = Console.ReadLine();
-                
+                //string url = Console.ReadLine();
+                string url = "https://www.ukad-group.com";
 
                 if (Timer.TimeofResponse(url) == -1) throw new Exception();
 
@@ -31,7 +31,7 @@ namespace TestTaskTrainee
                 await downloadFile.DownloadHtmlDoc();
                 await downloadFile.DownloadXmlDoc();
                 ParceDoc parceDoc = new ParceDoc();
-                parceDoc.StartParceDocs(downloadFile.XmlDoc, downloadFile.HtmlDoc, url);
+                await parceDoc.StartParceDocs(downloadFile.XmlDoc, downloadFile.HtmlDoc, url);
                 MethodsForReferences methods = new MethodsForReferences(parceDoc.XmlLinks, parceDoc.HtmlLinks);
                 methods.ShowParce();
             }

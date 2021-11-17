@@ -60,7 +60,8 @@ namespace TestTaskTrainee
         }
         public async Task DownloadHtmlDoc()
         {
-            Console.WriteLine("Download Html Doc");
+            //Thread.Sleep(100);
+           
             if (link_ == null || link_ == "") link_ = "https://www.ukad-group.com";
             HttpClient client = new HttpClient();
 
@@ -69,7 +70,7 @@ namespace TestTaskTrainee
             HttpContent content = response.Content;
 
             DownloadHtml = await content.ReadAsStringAsync();
-            
+           
         } 
     }
 }

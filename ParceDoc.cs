@@ -18,7 +18,8 @@ namespace TestTaskTrainee
     {
         private HashSet<string> xml_hash;
         private HashSet<string> html_hash;
-
+        private HashSet<string> html_hash_temp;
+        private List<string> list_html_temp;
 
         private int html_count;
         private int xml_count;
@@ -33,15 +34,19 @@ namespace TestTaskTrainee
         {
             xml_hash = new HashSet<string>();
             html_hash = new HashSet<string>();
+
+            list_html_temp = new List<string>();
+            html_hash_temp = new HashSet<string>();
+
             html_count = 0;
             xml_count = 0;
         }
-        public void StartParceDocs(string DownloadXml, string DownloadHtml, string url)
+        public async Task StartParceDocs(string DownloadXml, string DownloadHtml, string url)
         {
             try
             {
                 ParceXml(DownloadXml);
-                ParceHtml(DownloadHtml, url);
+                await ParceHtml(DownloadHtml, url);
 
 
                 if (html_count == 0 && xml_count == 0) throw new Exception("Full ban site");
@@ -71,87 +76,129 @@ namespace TestTaskTrainee
             urldoc.LoadXml(DownloadXml);
 
             XmlNodeList xmlSitemapList = urldoc.GetElementsByTagName("loc");
-            Console.WriteLine("Xml:");
+            
             foreach (XmlNode node in xmlSitemapList)
             {
                 xml_hash.Add(node.InnerText);
 
-                //Console.WriteLine($"link = {node.InnerText}");
+               
             }
             xml_count = xml_hash.Count;
             if (xml_count == 0) throw new Exception("There is not a xml document on this web-site, or a web-site forbade access to him.");
         }
 
-        private void ParceHtml(string DownloadHtml, string url)
+        private async Task ParceHtml(string DownloadHtml, string url)
         {
-            string temprary;
+            Console.WriteLine("Download Html Doc");
+            
             Console.WriteLine("Parcing Html:");
             var links = Regex.Matches(DownloadHtml, "<a(.*?) href=\"(.*?)\"").Cast<Match>().Select(x => x.Groups[2].Value);
-           
+
 
             var uriI = new Uri(url);
             url = Uri.UriSchemeHttps + "://" + uriI.Host;
 
-            Console.WriteLine("Html:");
+            
+            #region foreach
             foreach (var item in links)
             {
-                try
-                {
-                    if (item.Contains("https") || item.Contains("http") || item.Contains("www"))
-                    {
-                        if(item[0] =='/' && item[1] == '/')
-                        {
-                            temprary = "https:" + item;
-                            var temp_uriI = new Uri(temprary);
-
-                            if (uriI.Host == temp_uriI.Host)
-                            {
-                                html_hash.Add(temprary);
-                                
-                            }
-                        }
-                        else
-                        {
-                            var temp_uriI = new Uri(item);
-                            if (uriI.Host == temp_uriI.Host)
-                            {
-                                html_hash.Add(item);
-                                
-                            }
-                            
-                        }
-                        
-                    }
-                    else if (item[0] == '/' || item.Contains(url))
-                    {
-                        
-                        if (item.Contains(url) || item.Contains(uriI.Host))
-                        {
-                            html_hash.Add(item);
-                            
-                        }
-                        else
-                        {
-                            html_hash.Add(url + item);
-                            
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    
-                }
-               
-                
-
-                
-
-                
+                ForEachHtml(item, url, uriI, ref html_hash);
             }
+            list_html_temp = html_hash.ToList();
+            #endregion
+            int i = 0;
+            bool IsEnd = false;
+            
+            while (!IsEnd)
+            {
+                html_count = list_html_temp.Count;
+                for (; i < html_count; i++)
+                {
+
+
+                    DownloadFile downloadFile = new DownloadFile(list_html_temp[i]);
+                    await downloadFile.DownloadHtmlDoc();
+                    links = Regex.Matches(downloadFile.HtmlDoc, "<a(.*?) href=\"(.*?)\"").Cast<Match>().Select(x => x.Groups[2].Value);
+                    foreach (var itemsHtml in links)
+                    {
+                        ForEachHtml(itemsHtml, url, uriI, ref html_hash_temp);
+                    }
+
+
+                }
+                html_hash.UnionWith(html_hash_temp);
+                list_html_temp = html_hash.ToList();
+                if (html_count == html_hash.Count)
+                    IsEnd = true;
+            }
+            
             html_count = html_hash.Count;
             if (html_count == 0) throw new Exception("Ban html document");
+
+
         }
 
+
+
+
+        private void ForEachHtml(string item, string url, Uri uriI, ref HashSet<string> html)
+        {
+           
+            string temprary;
+
+            try
+            {
+                if(item.Contains(" ")|| item.Contains("/#"))
+                {
+                    return;
+                }
+                else if (item.Contains("https") || item.Contains("http") || item.Contains("www"))
+                {
+                    if (item[0] == '/' && item[1] == '/')
+                    {
+                        temprary = "https:" + item;
+                        var temp_uriI = new Uri(temprary);
+
+                        if (uriI.Host == temp_uriI.Host)
+                        {
+                            html.Add(temprary);
+
+                        }
+                    }
+                    else
+                    {
+                        var temp_uriI = new Uri(item);
+                        if (uriI.Host == temp_uriI.Host)
+                        {
+                            html.Add(item);
+
+                        }
+
+                    }
+
+                }
+
+                else if (item[0] == '/' || item.Contains(url))
+                {
+
+                    if (item.Contains(url) || item.Contains(uriI.Host))
+                    {
+                        html.Add(item);
+
+                    }
+                    else
+                    {
+                        html.Add(url + item);
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            
+        }
     }
 }

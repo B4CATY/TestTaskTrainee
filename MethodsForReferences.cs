@@ -112,7 +112,7 @@ namespace TestTaskTrainee
             i = 1;
             
             
-            Console.WriteLine("\n\n\n\n\nTiming\nUrl\t\t\t\t\t\t\t\tt\t\t\t\t\t\t\t\t\tTiming(ms)");
+            Console.WriteLine("\n\n\n\n\nTiming\nUrl\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tTiming(ms)");
             foreach (var item in list_all)
             {
                 Console.WriteLine($"{i}){item.link, -135}{item.time, 13}");
