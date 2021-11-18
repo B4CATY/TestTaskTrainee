@@ -148,7 +148,7 @@ namespace TestTaskTrainee
 
             try
             {
-                if(item.Contains(" ")|| item.Contains("/#"))
+                if(item.Contains(" ")|| item.Contains("/#")|| item.Contains("/?"))
                 {
                     return;
                 }
