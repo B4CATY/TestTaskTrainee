@@ -12,9 +12,12 @@ namespace TestTaskTrainee
         List<LinkTime> list_xml;
         List<LinkTime> list_html;
         List<LinkTime> list_all;
+        List<LinkTime> list_identical;
+         
 
         HashSet<string> main_Xml;
         HashSet<string> main_Html;
+        HashSet<string> temp_identical;
 
         private int XmlCount;
         private int HtmlCount;
@@ -23,6 +26,7 @@ namespace TestTaskTrainee
         {
             list_xml = new List<LinkTime>();
             list_html = new List<LinkTime>();
+            list_identical = new List<LinkTime>();
             main_Xml = mainXml;
             main_Html = mainHtml;
         }
@@ -32,7 +36,11 @@ namespace TestTaskTrainee
             HtmlCount = main_Html.Count;
             XmlCount = main_Xml.Count;
 
-            HashSet<string> temp = new HashSet<string>(main_Xml);
+            temp_identical = new HashSet<string>(main_Xml);
+            temp_identical.IntersectWith(main_Html);
+
+            HashSet<string> temp = new HashSet<string>(main_Xml); 
+            
 
             main_Xml.ExceptWith(main_Html);
             main_Html.ExceptWith(temp);
@@ -58,6 +66,11 @@ namespace TestTaskTrainee
 
         private void CteateListOfLinks()
         {
+            foreach (var item in temp_identical)
+            {
+                list_identical.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
+
+            }
             Console.WriteLine("Time Xml");
             foreach (var item in main_Xml)
             {
@@ -71,7 +84,8 @@ namespace TestTaskTrainee
                 list_html.Add(new LinkTime() { link = item, time = Timer.TimeofResponse(item) });
                
             }
-            list_all = list_html.Concat(list_xml).ToList();
+
+            list_all = list_html.Concat(list_xml).Concat(list_identical).ToList();
             SortingAtTimes(ref list_all);
         }
 
